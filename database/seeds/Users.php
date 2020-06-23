@@ -15,7 +15,8 @@ class Users extends Seeder
             'name'=> 'admin',
             'email' => 'admin@website.com',
             'password' => bcrypt('123456'),
-            'group' => 'admin'
+            'group' => 'admin',
+            'image'=> '1592163731SBC8QCE2RN.png',
         ]);
     }
 }
