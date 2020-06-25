@@ -29,12 +29,12 @@ class Videos extends BackEndController
     
 
     
-       protected function with()
+       public function with()
        {
            return ['cat', 'user'];
        }
    
-       protected function append()
+       public function append()
        {
 
            $array = [
@@ -59,11 +59,12 @@ class Videos extends BackEndController
        }
 
 
- 
+   
     
     public function store(Store $request){
         $fileName = $this->uploadImage($request);
-        $requestArray =  ['user_id' => auth()->user()->id , 'image' => $fileName] + $request->all();
+        $videoName = $this->uploadVideo($request);
+        $requestArray =  ['user_id' => auth()->user()->id , 'image' => $fileName, 'video' => $videoName] + $request->all();
         $row = $this->model->create($requestArray);
         $this->syncTagsSkills($row , $requestArray);
         
@@ -103,6 +104,15 @@ protected function uploadImage($request){
         return $fileName;
     }
     
+}
+
+protected function uploadVideo($request){
+    if($request->hasFile('video')){
+        $file = $request->file('video');
+        $fileName = time().str_random('10').'.'.$file->getClientOriginalExtension();
+        $file->move(public_path('uploads/videos') , $fileName);
+        return $fileName;
+    }
 }
 
 }

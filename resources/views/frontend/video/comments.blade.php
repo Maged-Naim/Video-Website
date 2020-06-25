@@ -1,9 +1,9 @@
-<div class="row" id="commnets">
-    <div class="col-md-12">
+<div class="row" id="commnets" style="margin-top: 30px;">
+    <div class="col-md-11">
         <div class="card text-left">
             <div class="card-header card-header-rose">
                 @php $comments = $video->comments @endphp
-                <i class="nc-icon nc-single-02"></i>
+                
                 <h5>
                     <i class="nc-icon nc-circle-10"></i>
                     Comments ({{ count($comments) }})
@@ -27,7 +27,7 @@
                     <p>{{ $comment->comment }} </p>
                     @if(auth()->user())
                         @if((auth()->user()->group == 'admin') || auth()->user()->id == $comment->user->id )
-                            <a href="" onclick="$(this).next('div').slideToggle(1000);return true;">edit</a>
+                            <a href="" onclick="$(this).next('div').slideToggle(1000);return false;">edit</a>
                             <div style="display: none">
                                 <form action="{{route('front.commentUpdate' , ['id' =>$comment->id ])}}" method="post">
                                     {{ csrf_field() }}

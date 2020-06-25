@@ -44,11 +44,11 @@ class BackEndController extends Controller
     return view('backend.'.$this->getClassNameFromModel().'.edit', compact('rows'))->with($append);  
   }
 
-  protected function with(){
+  public function with(){
     return [];
   }
 
-  protected function append(){
+  public function append(){
     return [];
   }
 

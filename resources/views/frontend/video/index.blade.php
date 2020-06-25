@@ -13,101 +13,114 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
-    <script type="text/javascript" src="jquery.form.js"></script>
+    {{-- <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+    <script type="text/javascript" src="jquery.form.js"></script> --}}
      
-</head>
+</head> 
 <body>
 
-    <div class="section " style="margin-top: 100px;">
+    <div class="section section-buttons" >
         <div class="container">
             <div class="title">
                 <h1>{{ $video->name}}</h1>
             </div>
-
+ 
             <div class="row">
                 <div class="col-md-12">
-                    @php $url = getYoutubeId($video->youtube) @endphp
-                    @if($url)
-                        <iframe class="embed-responsive-item" width="100%" height="500" src="https://www.youtube.com/embed/{{ $url }}"
-                                style="margin-bottom: 20px" frameborder="0" allowfullscreen></iframe>
-                    @endif
+                        {{-- @php $url = getYoutubeId($video->youtube) @endphp
+                        @if($url)
+                            <iframe class="embed-responsive-item" width="100%" height="500" src="https://www.youtube.com/embed/{{ $url }}"
+                                    style="margin-bottom: 20px" frameborder="0" allowfullscreen></iframe>
+                        @endif --}}
+
+
+                        <video width="90%" height="500" controls >
+                            <source src="{{'/uploads/videos/'.$video->video}}" type="video/mp4"/>               
+                        </video>
+                
+                        <div class="row">
+                
+                            <form method="POST"   target="frame" action="{{ route('front.like' , ['id' => $video->id]) }}"> 
+                                @csrf       
+                                <div class="flex items-center mr-2"> 
+                                    
+                                            <button id="thumbupbtn" type="submit" style="background-color: white; border: none;" onclick="submitButtonStyleUp(this)" class="btn btn-default" id="like">  
+                                                @if ($video->likes == 1)
+                                                    <i id="thumbup" class="fa fa-thumbs-up" style="font-size: 30px; color: blue;"></i>                                                                           
+                                                @else
+                                                    <i id="thumbup" class="fa fa-thumbs-up" style="font-size: 30px; color: black;"></i>                                                               
+                                                @endif  
+                                            </button> 
+                                </div>      
+                            </form>
+                        
+                            <form method="POST" target="frame" action="{{ route('front.dislike' , ['id' => $video->id]) }}" >
+                                @csrf
+                                @method('DELETE')
+                                <div class="flex items-center mr-4">     
+                                    <button id="thumbdownbtn" type="submit" style="background-color: white; border: none;"  onclick="submitButtonStyleDown(this)" class="btn btn-default" id="button" >
+                                        @if ($video->likes === 0)
+                                            <i id="thumbdown" class="fa fa-thumbs-down" style="font-size:30px; color: blue;"></i>                                
+                                        @else
+                                            <i id="thumbdown" class="fa fa-thumbs-down" style="font-size:30px; color: black;"></i>              
+                                        @endif
+                                                        
+                                    </button>
+                                </div>      
+                            
+                            </form>
+                        
+                        </div>
+        
+                
+                
                 </div>
    
-            {{-- ///////////////////////////////////////////////////////////////// --}}
+           
             
-            <div class="row">
-                <form method="POST"   target="frame" action="{{ route('front.like' , ['id' => $video->id]) }}"> 
-                    @csrf       
-                    <div class="flex items-center mr-2">                    
-                                <button type="submit" onclick="submitButtonStyle(this)" class="btn btn-default" id="like">    
-                                            <svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="true" style="{{ $video->isLikedBy($video->user) ? 'background-color:blue' : 'background-color:gray'}}; width: 40px; height: 40px;" class="style-scope yt-icon">
-                                                <g class="fill-current">
-                                                    <path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-1.91l-.01-.01L23 10z" class="style-scope yt-icon"></path>
-                                                </g>
-                                            </svg>
-                                </button> 
-                    </div>      
-                </form>
-            
-                <form method="POST" target="frame" action="{{ route('front.dislike' , ['id' => $video->id]) }}" >
-                    @csrf
-                    @method('DELETE')
-                    <div class="flex items-center mr-4">     
-                        <button type="submit"  onclick="submitButtonStyle(this)" class="btn btn-default" id="button" >
-                           <svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false" style="{{ $video->isDislikedBy($video->user) ? 'background-color:blue' : 'background-color:gray'}}; width: 40px; height: 40px;" class="style-scope yt-icon">
-                              <g class="fill-current">
-                                <path d="M15 3H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.73v1.91l.01.01L1 14c0 1.1.9 2 2 2h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L9.83 23l6.59-6.59c.36-.36.58-.86.58-1.41V5c0-1.1-.9-2-2-2zm4 0v12h4V3h-4z" class="style-scope yt-icon"></path>
-                              </g>
-                           </svg>                       
-                        </button>
-                    </div>      
-                 
-                </form>
-            </div>
-
-
-
-        {{-- //////////////////////////////////////////////////////////////////// --}}
         
-            <div class="row">
+       
+            <div class="row" style="margin-left: 10px;">
                 <div class="col-md-6">
                     <p>
                         <span style="margin-right: 20px">
-                            <i class='fas fa-user' style='font-size:24px'></i> : {{ $video->user->name }}
-                        </span>
+                            <i class="fas fa-user-alt"></i> : {{ $video->user->name }}
+                        </span><br>
                         <span style="margin-right: 20px">
-                            <i class='fas fa-calendar-alt' style='font-size:24px'></i>:  {{ $video->created_at }}
-                        </span>
+                            <i class="nc-icon nc-calendar-60"></i> :  {{ $video->created_at->format('Y.m.d') }}
+                        </span><br>
                         <span style="margin-right: 20px">
-                            <i class='fas fa-folder' style='font-size:24px'></i>
-                              <a href="{{ route('front.category' , ['id' => $video->cat->id ]) }}">
-                                {{ $video->cat->name }}
-                              </a>
+                            <i class="far fa-folder"></i> :    <a
+                                    href="{{ route('front.category' , ['id' => $video->cat->id ]) }}">
+                            {{ $video->cat->name }}
+                        </a>
                         </span>
-                    </p>
-                    <i class='fas fa-info-circle' style='font-size:24px'></i>
-                    <b><i>Description</i></b>
-                    <p>
-                        {{ $video->des }}
-                    </p>
+                    </p><br>
+                 
+                    <span style="margin-right: 10px"><h4>
+                            <i class="fas fa-pen"></i>
+                            <i class="fas fa-quote-left"></i>                       
+                            {{ $video->des }}
+                            <i class="fas fa-quote-right"></i>
+                        </h4></span>
+                    
                 </div>
                 <div class="col-md-3">
-                    <h3>Tags</h3>
+                    <h6>Tags</h6>
                     <p>
                         @foreach($video->tags as $tag)
                             <a href="{{ route('front.tags' , ['id' => $tag->id]) }}">
-                                <h4><span class="badge badge-pill badge-primary">{{ $tag->name }}</span></h4>
+                                <span class="badge badge-pill badge-primary">{{ $tag->name }}</span>
                             </a>
                         @endforeach
                     </p>
                 </div>
                 <div class="col-md-3">
-                    <h3>Skills</h3>
+                    <h6>Skills</h6>
                     <p>
                         @foreach($video->skills as $skill)
                             <a href="{{ route('front.skill' , ['id' => $skill->id]) }}">
-                                <h4><span class="badge badge-pill badge-info">{{ $skill->name }}</span></h4>
+                                <span class="badge badge-pill badge-info">{{ $skill->name }}</span>
                             </a>
                         @endforeach
                     </p>
@@ -179,16 +192,27 @@
             
             
        
-      
-           @include('frontend.video.comments')
-            @include('frontend.video.create-comment') 
+            
         </div>
+        
+            @include('frontend.video.comments')
+            @include('frontend.video.create-comment') 
     </div>
      
 <script>
-  function submitButtonStyle(_this) {
-  _this.style.backgroundColor = "blue";
-}
+  function submitButtonStyleUp(_this) {
+
+       document.getElementById("thumbupbtn").innerHTML = '<i  class="fa fa-thumbs-up" style="font-size:28px; color: blue;"></i>'
+       document.getElementById("thumbdownbtn").innerHTML = '<i  class="fa fa-thumbs-down" style="font-size:28px; color: black;"></i>'
+
+    }
+   function submitButtonStyleDown(_this) {
+
+      document.getElementById("thumbdownbtn").innerHTML = '<i  class="fa fa-thumbs-down" style="font-size:28px; color: blue;"></i>'
+      document.getElementById("thumbupbtn").innerHTML = '<i  class="fa fa-thumbs-up" style="font-size:28px; color: black;"></i>'
+
+    }
+
 </script> 
 <iframe name="frame" style="display: none;"></iframe>
 </body>

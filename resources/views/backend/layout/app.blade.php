@@ -32,7 +32,7 @@
               </div>
               <div class="collapse navbar-collapse justify-content-end" id="navigation">
                     <ul class="nav navbar-nav navbar-top">  
-                      <img src="{{Auth::user()->image}}" class="profile-image img-circle" style=" padding-top: 10px; padding-bottom: 10px;"> 
+                      <img src="{{'/uploads/images/'.Auth::user()->image}}" style="height: 70px; width: 70px;" class="profile-image img-circle" style=" padding-top: 10px; padding-bottom: 10px;"> 
                       <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             {{ Auth::user()->name }}

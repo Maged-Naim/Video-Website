@@ -23,5 +23,5 @@ trait CommentTrait{
         $row->update($request->all());
         return redirect()->route('videos.edit' , ['id' => $row->video_id , '#comments']);
     }
-
+ 
 }

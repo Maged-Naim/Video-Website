@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 // use Illuminate\Auth;
 
@@ -42,7 +43,10 @@ Route::namespace('BackEnd')->prefix('admin')->middleware('admin')->group(functio
 
 
 Auth::routes(['verify' => true]);
+// Route::name('auth.resend_confirmation')->get('/register/confirm/resend', 'Auth\RegisterController@resendConfirmation');
 
+// Route::name('auth.confirm')->get('/register/confirm/{confirmation_code}', 'Auth\RegisterController@confirm');
+ 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('category/{id}', 'HomeController@category')->name('front.category');
 Route::get('skill/{id}', 'HomeController@skills')->name('front.skill');
@@ -55,12 +59,17 @@ Route::get('profile/{id}/{slug?}', 'HomeController@profile')->name('front.profil
 Route::post('/video/{id}/like',  'FrontEnd\VideoLikesController@store')->name('front.like');
 Route::delete('/video/{id}/like','FrontEnd\VideoLikesController@destroy')->name('front.dislike');
 
-
-
+// if ($options['register'] ?? true) {
+   
+//     Route::post('register', 'Auth\RegisterController@store');
+// }
+ 
 Route::middleware('auth')->group(function () {
     Route::post('comments/{id}', 'HomeController@commentUpdate')->name('front.commentUpdate');
     Route::post('comments/{id}/create', 'HomeController@commentStore')->name('front.commentStore');
     Route::post('profile', 'HomeController@profileUpdate')->name('profile.update');
+    Route::get('addvideo', 'HomeController@addVideo');
+    Route::post('uploadvideo', 'HomeController@uploadVideoUser')->name('profile.video');
    
 });
 //app/Http/Controllers/FrontEnd/VideoLikesController@store

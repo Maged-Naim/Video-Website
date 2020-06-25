@@ -4,10 +4,14 @@
  <h1>Edit a video</h1>
  
         <div class="float-sm-right">
-            @php $url = getYoutubeId($rows->youtube) @endphp
+            {{-- @php $url = getYoutubeId($rows->youtube) @endphp
             @if($url)
             <iframe width="250"  src="https://www.youtube.com/embed/{{$url}}" frameborder="0"  allowfullscreen></iframe>       
-            @endif
+            @endif --}}
+            <video width="250"  controls>
+                <source src="{{'/uploads/videos/'.$rows->video}}" type="video/mp4">
+                      Your browser does not support the video tag.
+            </video>
         </div>
 
         <div class="row">
@@ -63,6 +67,19 @@
                                 @enderror
                         </div>
                     </div>
+
+                    @php $input = "video"; @endphp
+                    <div class="col-md-12">
+                        <div class="form-group bmd-form-group">
+                            <label for="{{$input}}">Video </label>
+                            <input type="file" class="form-control @error($input) is-invalid @enderror" name={{$input}}>
+                            @error($input)
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                                @enderror
+                        </div>
+                    </div>
                     
 
                     <div class="col-md-12">
@@ -76,7 +93,7 @@
                                     @enderror
                         </div>
                     </div>
-
+ 
                     @php $input = "published"; @endphp
                     <div class="col-md-12">
                         <div class="form-group bmd-form-group">

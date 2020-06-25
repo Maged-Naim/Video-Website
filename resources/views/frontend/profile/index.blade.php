@@ -26,7 +26,7 @@
       <!-- CSS Just for demo purpose, don't include it in your project -->
       <link href="/frontend/demo/demo.css" rel="stylesheet" />
     </head>
-    
+     
     <body class="profile-page sidebar-collapse">
       <div class="page-header page-header-xs" data-parallax="true" style="background-image: url('/frontend/img/fabio-mangione.jpg');">
         <div class="filter"></div>
@@ -37,9 +37,9 @@
             <div class="avatar">
               {{-- <img src="/frontend/img/faces/joe-gardner-2.jpg" alt="Circle Image" class="img-circle img-no-padding img-responsive"> --}}
               
-                <img src="{{'storage/app/images/'.$user->id.'/'.$user->image}}"  class="img-circle img-no-padding img-responsive">
+                <img src="{{'/uploads/images/'.$user->image}}"  class="img-circle img-no-padding img-responsive">
                 
-                {{-- <img data-src= "{{Storage::get( $user->image) }}" alt="Card image cap">  --}}
+               
                
             </div>
             <div class="name">
@@ -57,10 +57,13 @@
                 <div class="row" style="margin-bottom: 130px;">
                     <div class="col-md-6 ml-auto mr-auto text-center" >
                         <button onclick="$('#profileCard').slideToggle(1000)" class="btn btn-outline-info btn-round"><i class="fa fa-cog"></i> Update Profile</button>
-                        
+                        <button onclick="$('#uploadvideo').slideToggle(1000)" class="btn btn-outline-info btn-round"><i class="fa fa-cog"></i> Upload Video</button>
+
                     </div>
                 </div>
                 @include('frontend.profile.edit')
+                @include('frontend.profile.add-video')
+                
             @endif
             
         </div>

@@ -2,20 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BackEnd\Videos\Store as VideosStore;
 use App\Http\Requests\FrontEnd\Comments\Store;
 use App\Http\Requests\FrontEnd\Messages\Store as MessagesStore;
 use App\Models\Category;
 use App\Models\Comment;
+use App\Models\Like;
 use App\Models\Message;
 use App\Models\Page;
 use App\Models\Skill;
 use App\Models\Tag;
 use App\Models\User;
 use App\Models\Video;
+use Categories;
+use Illuminate\Http\Client\Request as ClientRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use SweetAlert;
+use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
 use UxWeb\SweetAlert\SweetAlert as SweetAlertSweetAlert;
 
 class HomeController extends Controller
@@ -25,8 +31,13 @@ class HomeController extends Controller
      *
      * @return void
      */
+
+    
+
+
     public function __construct()
     {
+        $this->middleware(['auth','verified']);
         $this->middleware('auth')->only([
             'tags','category','skills','video','commentUpdate', 'commentStore'
         ]);
@@ -59,7 +70,8 @@ class HomeController extends Controller
     }
 
     public function video($id){
-        $video = Video::published()->with('skills' , 'tags' , 'cat' , 'user' , 'comments.user')->withLikes()->findOrFail($id);
+        $video = Video::published()->with('skills','likes' ,'tags' , 'cat' , 'user' , 'comments.user')->withLikes()->findOrFail($id);
+        
         return view('frontend.video.index' , compact('video'));
     }
 
@@ -73,7 +85,8 @@ class HomeController extends Controller
 
     public function profile($id , $slug = null){
         $user = User::findOrFail($id);
-        return view('frontend.profile.index' , compact('user'));
+        $tags = Tag::get();
+        return view('frontend.profile.index' , compact('user', 'tags'));
     }
 
     public function commentUpdate($id , Store $request){
@@ -136,15 +149,95 @@ class HomeController extends Controller
         }
       
         if($request->hasFile('image')){
-            $image = request()->file('image')->getClientOriginalName();
-            request()->file('image')->storeAs('images', $user->id. '/' . $image, '');
-            $user->update(['image' => $image]);
+            $fileNameWithExt = request()->file('image')->getClientOriginalName();
+            $fileName = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
+            $extension = request()->file('image')->extension();
+            $fileNameToStore =  $fileName.'_'.time().'.'.$extension;
+            $path = request()->file('image')->storeAs('images', $fileNameToStore);
+            $file = request()->file('image');
+            $file->move('uploads/images', $fileNameToStore);
+            $user->update(['image' => $fileNameToStore]);
         }
         if(!empty($array)){
             $user->update($array);
         }
         alert()->success('your profile has been updated', 'Done');
         return redirect()->route('front.profile' , ['id' => $user->id , 'slug' =>slug($user->name)]);
+    }
+
+
+    protected function append()
+    {
+
+        $array = [
+            'categories' => Category::get(),
+            'skills' => Skill::get(),
+            'tags' => Tag::get(),
+            'selectedSkills' => [],
+            'selectedTags' => [],
+            'comments' => []
+        ];
+        if(request()->route()->parameter('video')){
+         $array['selectedSkills']  = $this->model->find(request()->route()->parameter('video'))
+             ->skills()->pluck('skills.id')->toArray();
+        
+        $array['selectedTags']  = $this->model->find(request()->route()->parameter('video'))
+        ->tags()->pluck('tags.id')->toArray();
+
+        $array['comments']  = $this->model->find(request()->route()->parameter('video'))
+        ->comments()->orderBy('id','desc')->with('user')->get();
+        }   
+     return $array;
+    }
+    // public function addVideo()
+    // {
+    //     $tags = Tag::get();
+
+    //     $skills = Skill::get();
+    //     $categories = category::get();
+    //     dd($tags);
+    //     return view('frontend.profile.add-video', compact('tags', 'skills', 'categories'));
+    // }
+
+    public function uploadVideoUser(VideosStore $request)
+    {
+        
+        $fileName = $this->uploadImage($request);
+        $videoName = $this->uploadVideo($request);
+        $requestArray =  ['user_id' => auth()->user()->id , 'image' => $fileName, 'video' => $videoName] + $request->all();
+        $row = Video::create($requestArray);
+        $this->syncTagsSkills($row , $requestArray);
+        
+        alert()->success('Video has been added', 'Done');
+        return redirect()->route('front.profile')->with('success','video is Added successfully');
+
+    } 
+
+    protected function uploadImage($request){
+        if($request->hasFile('image')){
+            $file = $request->file('image');
+            $fileName = time().str_random('10').'.'.$file->getClientOriginalExtension();
+            $file->move(public_path('uploads') , $fileName);
+            return $fileName;
+        }
+        
+    }
+
+    protected function uploadVideo($request){
+        if($request->hasFile('video')){
+            $file = $request->file('video');
+            $fileName = time().str_random('10').'.'.$file->getClientOriginalExtension();
+            $file->move(public_path('uploads/videos') , $fileName);
+            return $fileName;
+        }
+    }
+    protected function syncTagsSkills($row , $requestArray){
+        if (isset($requestArray['skills']) && !empty($requestArray['skills'])) {
+            $row->skills()->sync($requestArray['skills']);
+        }
+        if (isset($requestArray['tags']) && !empty($requestArray['tags'])) {
+            $row->tags()->sync($requestArray['tags']);
+        }
     }
 
 }

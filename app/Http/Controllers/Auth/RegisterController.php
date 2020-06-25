@@ -7,8 +7,11 @@ use App\Http\Requests\BackEnd\Users\Store;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
+
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Request as FacadesRequest;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\Console\Input\Input;
 
@@ -68,9 +71,36 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \App\Models\User
      */
-    protected function create(array $data)
-    {
+
+    // public function uploadImage($request , $key)
+    // {
+    //     //image upload 
+    //     if($request->hasFile($key)){
+    //                 // Get file name with the extension
+    //             $fileNameWithExt = $request->file($key)->getClientOriginalName();
+    //                 // Get just file name
+    //             $fileName = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
+    //                 // Get just Ext
+    //             $extension = $request->file($key)->getClientOriginalExtension();
+    //                 // File name to store
+    //             $fileNameToStore =  $fileName.'_'.time().'.'.$extension;
+    //                 // upload image
+    //             // $path = $request->file('image')->storeAs('image', $fileNameToStore);
+    //             $file = $request->$key;
+    //             $file->move('uploads/images', $fileNameToStore);
+
+    //             return $fileNameToStore;
+
+    //     }
+       
+    // }
     
+
+    protected function create(array $data )
+    {      
+       
+      
+       
        
         $user = User::create([
                     'name' => $data['name'],
@@ -82,12 +112,79 @@ class RegisterController extends Controller
                  ]);
                  
         if(request()->hasFile('image')){
-            $image = request()->file('image')->getClientOriginalName();
-            request()->file('image')->storeAs('images', $user->id. '/' . $image, '');
-            $user->update(['image' => $image]);
+            $fileNameWithExt = request()->file('image')->getClientOriginalName();
+            $fileName = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
+            $extension = request()->file('image')->extension();
+            $fileNameToStore =  $fileName.'_'.time().'.'.$extension;
+            $path = request()->file('image')->storeAs('images', $fileNameToStore);
+            $file = request()->file('image');
+            $file->move('uploads/images', $fileNameToStore);
+            $user->update(['image' => $fileNameToStore]);
         }
     
         return $user;
 
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // public function store(Request $request)
+    // {
+    
+
+    //     // Handle File upload
+    //     if($request->hasFile('image')){
+            
+    //         // get filename with the extention
+    //         $fileNameWithExt = $request->file('image')->hashName();
+
+    //         // get just filename 
+    //         $fileName = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
+
+    //         // get just Ext
+    //         $extention = $request->file('image')->extension();
+
+    //         // Filename to store
+    //         $fileNameToStore = $fileName.'_'.time().'.'.$extention;
+
+    //         // upload image
+    //         $path = $request->file('image')->storeAs('uploads/images',$fileNameToStore);
+    //         dd($path);
+    //     }else{
+    //         $fileNameStore='noimage.jpg';
+    //     } 
+        
+        
+    //     $user = new User;
+    //     $user->name = $request->input('name');
+    //     $user->email = $request->input('email');
+    //     $user->password = Hash::make($request->input('password'));
+    //     $user->group = 'user';
+    //     $user->image = $fileNameToStore;
+    //     $user->save();
+
+    //     return redirect('/home');
+    // }
+
 }
