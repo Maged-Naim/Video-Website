@@ -4,10 +4,7 @@
  <h1>Edit a video</h1>
  
         <div class="float-sm-right">
-            {{-- @php $url = getYoutubeId($rows->youtube) @endphp
-            @if($url)
-            <iframe width="250"  src="https://www.youtube.com/embed/{{$url}}" frameborder="0"  allowfullscreen></iframe>       
-            @endif --}}
+        
             <video width="250"  controls>
                 <source src="{{'/uploads/videos/'.$rows->video}}" type="video/mp4">
                       Your browser does not support the video tag.
@@ -40,19 +37,7 @@
 
                     
 
-                    @php $input = "meta_keywords"; @endphp
-                    <div class="col-md-12">
-                        <div class="form-group bmd-form-group">
-                            <label class="bmd-label-floating">Meta keywords</label>
-                            <input type="text" name="{{$input}}" 
-                                class="form-control @error($input) is-invalid @enderror"  value="{{$rows->meta_keywords}}">
-                            @error($input)
-                            <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-                    </div>
+               
 
 
                     
@@ -82,17 +67,7 @@
                     </div>
                     
 
-                    <div class="col-md-12">
-                            <div class="form-group bmd-form-group">
-                                <label for="keywords">Youtube</label>
-                                <input type="url" class="form-control @error('keywords') is-invalid @enderror" name="youtube" value="{{$rows->youtube}}">
-                                @error('youtube')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                    @enderror
-                        </div>
-                    </div>
+             
  
                     @php $input = "published"; @endphp
                     <div class="col-md-12">
@@ -165,19 +140,7 @@
                     </div>
 
 
-                    <div class="col-md-12">
-                            <div class="form-group bmd-form-group">
-                        
-                                <label for="meta_des">Meta Description</label>
-                                <input type="text" class="form-control @error('meta_des') is-invalid @enderror" value="{{$rows->meta_des}}" name="meta_des">
-                                @error('meta_des')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                    @enderror
-                            </div>
-                    </div>
-                    
+             
 
                     <div class="col-md-12">
                         <div class="form-group bmd-form-group">

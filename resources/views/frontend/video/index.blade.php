@@ -27,13 +27,6 @@
  
             <div class="row">
                 <div class="col-md-12">
-                        {{-- @php $url = getYoutubeId($video->youtube) @endphp
-                        @if($url)
-                            <iframe class="embed-responsive-item" width="100%" height="500" src="https://www.youtube.com/embed/{{ $url }}"
-                                    style="margin-bottom: 20px" frameborder="0" allowfullscreen></iframe>
-                        @endif --}}
-
-
                         <video width="90%" height="500" controls >
                             <source src="{{'/uploads/videos/'.$video->video}}" type="video/mp4"/>               
                         </video>
@@ -51,7 +44,7 @@
                                                 <i id="thumbup" class="fa fa-thumbs-up" style="font-size: 30px; color: black;"></i>                                                               
                                             @endif  
                                         </button>
-                                    <yt-formatted-string id="text" class="style-scope ytd-toggle-button-renderer style-text" aria-label="likes">{{$video->likes()->where(['liked' => '1'])->count()}} </yt-formatted-string>                                   
+                                    {{-- <yt-formatted-string id="text" class="style-scope ytd-toggle-button-renderer style-text" aria-label="likes">{{$video->likes()->where(['liked' => '1'])->count()}} </yt-formatted-string>                                    --}}
                                 </div>      
                             </form>
                         
@@ -66,7 +59,7 @@
                                             <i id="thumbdown" class="fa fa-thumbs-down" style="font-size:30px; color: black;"></i>              
                                         @endif
                                     </button>
-                                    <yt-formatted-string id="text" class="style-scope ytd-toggle-button-renderer style-text" aria-label="likes">{{$video->likes()->where(['liked' => '0'])->count()}} </yt-formatted-string>
+                                    {{-- <yt-formatted-string id="text" class="style-scope ytd-toggle-button-renderer style-text" aria-label="likes">{{$video->likes()->where(['liked' => '0'])->count()}} </yt-formatted-string> --}}
                                              
 
                                 </div>      

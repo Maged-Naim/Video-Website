@@ -19,18 +19,16 @@ class Store extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array
+     * @return array 
      */
     public function rules()
     {
-        return [
+        return [ 
             'name' => ['required', 'string', 'max:191'],
-            'des' => ['required', 'max:191', 'min:10'],
-            'meta_keywords' => ['max:191'],
-            'meta_des' => ['max:191'],   
+            'des' => ['required', 'max:191', 'min:10'],  
             'cat_id'=> ['required','integer'],
             'published'=>['required'],
-            'youtube'=>['required', 'url'],
+            'video'=>['required'],
             'image'=>['required', 'image'],
         ];
     }

@@ -15,17 +15,17 @@ class Videos extends Seeder
         $faker = Faker::create();
 
         $images = [
-            '1592163731SBC8QCE2RN.png',
-            'bliss-night.jpg',
-            '1592078210eipdtxFdzj.jpg',
-            '1592009476W2Q3gJ0awc.png'
+            'm2_1592973812.jpeg',
+            'm5_1592973721.jpeg',
+            'm_1592974312.png',
+            'm_1592973597.jpeg'
         ];
 
-        $youtube = [
-            'https://www.youtube.com/watch?v=AYj3yTPjwz8&t=7s',
-            'https://www.youtube.com/watch?v=UF8uR6Z6KLc',
-            'https://www.youtube.com/watch?v=MxZpaJK74Y4',
-            'https://www.youtube.com/watch?v=BmYv8XGl-YU'
+        $videourl = [
+            '1593054858FiMelab4Wy.mp4',
+            '1593056182xeNAVbSp4g.mp4',
+            '1593057285afnFEecRt4.mp4',
+            '1593104046eTaZOdjq2Z.mp4',
         ];
 
         $ids = [1,2,3,4,5,6,7,8,9];
@@ -33,10 +33,8 @@ class Videos extends Seeder
         for($i = 0 ;$i< 10 ;$i++){
             $array = [
                 'name' => $faker->word,
-                'meta_keywords' => $faker->name,
-                'meta_des' => $faker->name,
                 'cat_id' => 1,
-                'youtube' => $youtube[rand(0,3)],
+                'video' => $videourl[rand(0,3)],
                 'published' => rand(0,1),
                 'image' => $images[rand(0,3)],
                 'des' => $faker->paragraph,

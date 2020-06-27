@@ -11,13 +11,11 @@ class Video extends Model
    
    protected $fillable = [
     'name',
-    'meta_keywords',
-    'meta_des',
     'des',
     'user_id',
     'cat_id',
     'published',
-    'youtube',
+    'video',
     'image',
     'video'
    ];

@@ -25,10 +25,9 @@ class Update extends FormRequest
     {
         return [
             'name' => ['required', 'max:191'],
-            'meta_keywords' => ['max:191'],
-            'meta_des' => ['max:191'],
+           
             'des' => ['required' , 'min:10'],
-            'youtube' => ['required' , 'min:10' ,'url' ] ,
+            
             'cat_id' => ['required'  ,'integer' ],
             'published' => ['required' ],
             'image' => [ 'nullable', 'image'],

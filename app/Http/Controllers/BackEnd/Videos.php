@@ -104,7 +104,7 @@ protected function uploadImage($request){
         return $fileName;
     }
     
-}
+} 
 
 protected function uploadVideo($request){
     if($request->hasFile('video')){
