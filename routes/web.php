@@ -40,7 +40,7 @@ Route::namespace('BackEnd')->prefix('admin')->middleware('admin')->group(functio
 
     
 });
-
+ 
 
 Auth::routes(['verify' => true]);
 // Route::name('auth.resend_confirmation')->get('/register/confirm/resend', 'Auth\RegisterController@resendConfirmation');
@@ -68,9 +68,10 @@ Route::middleware('auth')->group(function () {
     Route::post('comments/{id}', 'HomeController@commentUpdate')->name('front.commentUpdate');
     Route::post('comments/{id}/create', 'HomeController@commentStore')->name('front.commentStore');
     Route::post('profile', 'HomeController@profileUpdate')->name('profile.update');
-    Route::get('addvideo', 'HomeController@addVideo');
+    Route::get('addvideo', 'HomeController@addVideo')->name('user.video');
     Route::post('uploadvideo', 'HomeController@uploadVideoUser')->name('profile.video');
    
 });
 //app/Http/Controllers/FrontEnd/VideoLikesController@store
 // app/Http/Controllers/FrontEnd/VideoLikesController@destroy
+ 

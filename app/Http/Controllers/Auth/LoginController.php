@@ -19,7 +19,7 @@ class LoginController extends Controller
     |
     */
 
-    use AuthenticatesUsers;
+    use AuthenticatesUsers; 
 
     /**
      * Where to redirect users after login.
@@ -27,7 +27,7 @@ class LoginController extends Controller
      * @var string
      */
     protected function redirectTo(){
-        if (auth()->user()->group == "admin") {       
+        if (auth()->user()->group === "admin") {       
             return '/admin';
         }else{
         return '/home';

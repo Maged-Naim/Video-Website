@@ -13,8 +13,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    {{-- <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
-    <script type="text/javascript" src="jquery.form.js"></script> --}}
+    <link href="/frontend/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/frontend/css/paper-kit.css?v=2.2.0" rel="stylesheet" />
      
 </head> 
 <body>
@@ -42,15 +42,16 @@
                 
                             <form method="POST"   target="frame" action="{{ route('front.like' , ['id' => $video->id]) }}"> 
                                 @csrf       
-                                <div class="flex items-center mr-2"> 
+                                <div class="interaction"> 
                                     
-                                            <button id="thumbupbtn" type="submit" style="background-color: white; border: none;" onclick="submitButtonStyleUp(this)" class="btn btn-default" id="like">  
-                                                @if ($video->likes == 1)
-                                                    <i id="thumbup" class="fa fa-thumbs-up" style="font-size: 30px; color: blue;"></i>                                                                           
-                                                @else
-                                                    <i id="thumbup" class="fa fa-thumbs-up" style="font-size: 30px; color: black;"></i>                                                               
-                                                @endif  
-                                            </button> 
+                                        <button id="thumbupbtn" type="submit" style="background-color: white; border: none;" onclick="submitButtonStyleUp(this)" class="btn btn-default" id="like">  
+                                            @if ($video->likes == 1)
+                                                <i id="thumbup" class="fa fa-thumbs-up" style="font-size: 30px; color: blue;"></i>                                                                           
+                                            @else
+                                                <i id="thumbup" class="fa fa-thumbs-up" style="font-size: 30px; color: black;"></i>                                                               
+                                            @endif  
+                                        </button>
+                                    <yt-formatted-string id="text" class="style-scope ytd-toggle-button-renderer style-text" aria-label="likes">{{$video->likes()->where(['liked' => '1'])->count()}} </yt-formatted-string>                                   
                                 </div>      
                             </form>
                         
@@ -64,16 +65,16 @@
                                         @else
                                             <i id="thumbdown" class="fa fa-thumbs-down" style="font-size:30px; color: black;"></i>              
                                         @endif
-                                                        
                                     </button>
+                                    <yt-formatted-string id="text" class="style-scope ytd-toggle-button-renderer style-text" aria-label="likes">{{$video->likes()->where(['liked' => '0'])->count()}} </yt-formatted-string>
+                                             
+
                                 </div>      
                             
                             </form>
                         
                         </div>
-        
-                
-                
+    
                 </div>
    
            
@@ -126,69 +127,7 @@
                     </p>
                 </div>
             </div>
-            {{-- <br><br>
-            <div class="p-4 mb-3 bg-info text-white" style="margin-bottom: 1rem" id="comments">
-               
-                    <div class="card text-left">
-                        <div class="card-header card-header-rose">
-                            @php $comments = $video->comments  @endphp
-                            <h2><span  class="badge badge-info">Comments({{count($comments)}})</span></h2>
-                        </div>
-                        <div class="card-body">
-                            @foreach ($comments as $comment)
-                               <div class="row">
-            
-                                <div class="col-md-12">
-                                    <h3>
-                                        <a href="{{ route('front.profile' , ['id' => $comment->user->id , 'slug' => slug($comment->user->name)]) }}">
-                                            {{ $comment->user->name }}
-                                        </a>
-                                 </h3>
-                                </div>
-                                    
-                                   <div class="col-md-4 text-right">
-                                       <span>
-                                        <i class="nc-icon nc-calendar-60"></i> : 
-                                           {{ $comment->created_at }}
-                                       </span>
-                                      
-                                   </div>
-                               </div>
-                                  <h6> <span class="badge badge-pill badge-light">{{ $comment->comment}}</span></h6>
-                                  @if (auth()->user())
-                                  @if (auth()->user()->group == 'admin' || auth()->user()->id == $comment->user->id)
-                                  @endif
-                                  <a id="edit" href="" onclick="$(this).next('div').slideToggle(1000);  return false;">edit</a>  
-                                  <div style="display: none;">
-                                      <form action="{{route('front.commentUpdate', ['id' => $comment->id])}}" method="POST">
-                                        {{csrf_field()}}
-                                         <div class="form-group">
-                                             <textarea name="comment" class="form-control" rows="1">{{$comment->comment}}</textarea>
-                                         </div>
-                                          <button type="submit" class="btn btn-dark">Edit</button>
-                                      </form>
-                                  </div> 
-                                 @endif
-                                  @if (!$loop->last)
-                                      <hr>
-                                  @endif
-                            @endforeach
-                        </div>
-                    </div>
-                
-            </div>
-            <br><br>
-            @if (auth()->user())
 
-            <form  action="{{route('front.commentStore', ['id' => $video->id])}}" method="POST">
-               {{csrf_field()}}
-                <div class="form-group">
-                    <h2><span class="badge badge-info">ADD Comment</span></h2>
-                    <textarea name="comment" class="form-control" rows="3" cols="100"></textarea>
-                </div>
-                 <button type="submit" class="btn btn-success" >Add Comment</button>
-             </form>
-             @endif --}}
             
             
        
@@ -204,7 +143,7 @@
 
        document.getElementById("thumbupbtn").innerHTML = '<i  class="fa fa-thumbs-up" style="font-size:28px; color: blue;"></i>'
        document.getElementById("thumbdownbtn").innerHTML = '<i  class="fa fa-thumbs-down" style="font-size:28px; color: black;"></i>'
-
+        
     }
    function submitButtonStyleDown(_this) {
 
@@ -215,6 +154,11 @@
 
 </script> 
 <iframe name="frame" style="display: none;"></iframe>
+
+<script src="frontend/js/core/jquery.min.js" type="text/javascript"></script>
+<script src="frontend/js/core/popper.min.js" type="text/javascript"></script>
+<script src="frontend/js/core/bootstrap.min.js" type="text/javascript"></script>
+<script src="frontend/js/paper-kit.js?v=2.2.0" type="text/javascript"></script>
 </body>
 </html>  
 

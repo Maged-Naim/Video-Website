@@ -31,7 +31,8 @@
                             </td>
                             <td>
                                 <a href="{{ route('videos.index' )}}">
-                                    {{ $comment->video->name }}
+                                     {{-- {{dd($comment)}} --}}
+                                    {{ $comment->video_id}}
                                 </a>
                             </td>
                             <td> {{ $comment->comment }}</td>

@@ -32,14 +32,14 @@ class HomeController extends Controller
      * @return void
      */
 
-    
+     
 
 
     public function __construct()
     {
-        $this->middleware(['auth','verified']);
+        
         $this->middleware('auth')->only([
-            'tags','category','skills','video','commentUpdate', 'commentStore'
+            'tags','category','skills','video','commentUpdate', 'commentStore', 'uploadVideoUser'
         ]);
     }
 
@@ -71,8 +71,10 @@ class HomeController extends Controller
 
     public function video($id){
         $video = Video::published()->with('skills','likes' ,'tags' , 'cat' , 'user' , 'comments.user')->withLikes()->findOrFail($id);
-        
-        return view('frontend.video.index' , compact('video'));
+        $likes =DB::table('likes')
+                ->where('likes.video_id', $video->id)
+                ->get();
+        return view('frontend.video.index' , compact('video', 'likes'));
     }
 
     public function tags($id){
@@ -85,8 +87,17 @@ class HomeController extends Controller
 
     public function profile($id , $slug = null){
         $user = User::findOrFail($id);
-        $tags = Tag::get();
-        return view('frontend.profile.index' , compact('user', 'tags'));
+        
+        $tags = Tag::get();  
+        $videos = DB::table('videos')
+                        ->where('videos.user_id', $user->id)
+                        ->latest()
+                        ->get();
+                      
+        return view('frontend.profile.index' , compact('user', 'tags', 'videos'));   
+        
+        
+        
     }
 
     public function commentUpdate($id , Store $request){
@@ -130,7 +141,7 @@ class HomeController extends Controller
         return view('frontend.page.index' , compact('pages'));
     }
 
-
+ 
 
     public function profileUpdate(\App\Http\Requests\FrontEnd\Users\Store $request){
         $user = User::findOrFail(auth()->user()->id);
@@ -189,19 +200,10 @@ class HomeController extends Controller
         }   
      return $array;
     }
-    // public function addVideo()
-    // {
-    //     $tags = Tag::get();
-
-    //     $skills = Skill::get();
-    //     $categories = category::get();
-    //     dd($tags);
-    //     return view('frontend.profile.add-video', compact('tags', 'skills', 'categories'));
-    // }
 
     public function uploadVideoUser(VideosStore $request)
     {
-        
+        $user = User::findOrFail(auth()->user()->id);
         $fileName = $this->uploadImage($request);
         $videoName = $this->uploadVideo($request);
         $requestArray =  ['user_id' => auth()->user()->id , 'image' => $fileName, 'video' => $videoName] + $request->all();
@@ -209,7 +211,7 @@ class HomeController extends Controller
         $this->syncTagsSkills($row , $requestArray);
         
         alert()->success('Video has been added', 'Done');
-        return redirect()->route('front.profile')->with('success','video is Added successfully');
+        return redirect()->route('front.profile',['id' => $user->id , 'slug' =>slug($user->name)])->with('success','video is Added successfully');
 
     } 
 
@@ -239,5 +241,7 @@ class HomeController extends Controller
             $row->tags()->sync($requestArray['tags']);
         }
     }
+
+
 
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\BackEnd;
 use App\Http\Controllers\BackEnd\BackEndController;
 use App\Models\Comment;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class Home extends BackEndController
 {
@@ -13,12 +14,16 @@ class Home extends BackEndController
         parent::__construct($model);
     }
 
-    // public function index(){
-    //     return view('backend.layout.app');
-    // }
+  
 
     public function index(){
-        $comments = Comment::with('user' , 'video')->orderby('id' , 'desc')->paginate(20);
+        $comments = Comment::with('user' , 'video')->orderby('id' , 'desc')->paginate(10);
+      
+        // $videos = DB::table('videos')
+        //                 ->where('videos.id', 'comments.video_id')
+        //                 ->get();
+        
         return view('backend.home' , compact('comments'));
     }
 }
+ 

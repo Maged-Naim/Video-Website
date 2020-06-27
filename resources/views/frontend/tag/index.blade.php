@@ -11,4 +11,7 @@
             @include('frontend.shared.video-row')
         </div>
     </div>
+    <script src="/frontend/js/core/jquery.min.js" type="text/javascript"></script>
+    <script src="/frontend/js/core/popper.min.js" type="text/javascript"></script>
+    <script src="/frontend/js/core/bootstrap.min.js" type="text/javascript"></script>
 @endsection
