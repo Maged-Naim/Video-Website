@@ -32,13 +32,13 @@
                                 Actions
                                 </th>
                             </tr></thead>
-                                @foreach($rows as $rows)
+                                @foreach($rows as $row)
                                     <tr>
-                                        <td>{{$rows->id}}</td>
-                                        <td>{{$rows->name}}</td>
+                                        <td>{{$row->id}}</td>
+                                        <td>{{$row->name}}</td>
                                        
                                         <td class=" text-right">  
-                                            <form action="{{ route('skills.destroy', $rows->id)}}" method="post">  
+                                            <form action="{{ route('skills.destroy', $row->id)}}" method="post">  
                                                  @csrf  
                                                  @method('DELETE')  
                                                  <button type="submit" rel="tooltip" onclick="return confirm('Are you sure?')" title="" class="btn btn-danger btn-link btn-sm" data-original-title="Remove">
@@ -47,7 +47,7 @@
                                             </form>  
                                         </td>  
                                         <td class=" text-right" >  
-                                            <form action="{{ route('skills.edit', $rows->id)}}" method="GET">  
+                                            <form action="{{ route('skills.edit', $row->id)}}" method="GET">  
                                                 @csrf             
                                                 <button type="submit" rel="tooltip" title="" class="btn btn-primary btn-link btn-sm" data-original-title="Edit Task">
                                                     <i class="material-icons">edit</i>
