@@ -50,7 +50,7 @@
                                         <td>{{$users->email}}</td>
                                         <td>{{$users->group}}</td>
                                         <td>{{$users->image}}</td>
-
+                                            
                                         <td class=" text-right">  
                                             <form action="{{ route('users.destroy', $users->id)}}" method="post">  
                                                  @csrf  

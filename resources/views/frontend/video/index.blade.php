@@ -46,7 +46,7 @@
                                         </button>
                                     {{-- <yt-formatted-string id="text" class="style-scope ytd-toggle-button-renderer style-text" aria-label="likes">{{$video->likes()->where(['liked' => '1'])->count()}} </yt-formatted-string>                                    --}}
                                 </div>      
-                            </form>
+                            </form> 
                         
                             <form method="POST" target="frame" action="{{ route('front.dislike' , ['id' => $video->id]) }}" >
                                 @csrf
