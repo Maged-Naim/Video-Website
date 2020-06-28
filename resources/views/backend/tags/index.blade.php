@@ -57,7 +57,7 @@
                                     </tr>
                                 @endforeach
                             </table>
-                          
+                            {!! $rows->links() !!} 
                         </div>
                         </div>
                     </div>
