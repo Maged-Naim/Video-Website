@@ -31,7 +31,7 @@ class ReplayContact extends Mailable
         $replay = $this->replay;
 
         return $this->to($contactMessage->email)
-        ->from('megoupe@support.com', 'MEGOTUPE')
+        ->from('magednaim58@gmail.com', 'MEGOTUPE')
         ->view('backend.mails.replay-message', compact('contactMessage', 'replay'));
     }
 
