@@ -47,7 +47,7 @@
                                         <td>{{$row->message}}</td>
 
                                         <td class=" text-right">  
-                                            <form action="{{ route('message.replay', ['id' => $row->id])}}" method="post">  
+                                            <form action="{{ route('messages.destroy',  $row->id)}}" method="post">  
                                                  @csrf  
                                                  @method('DELETE')  
                                                  <button type="submit" rel="tooltip" onclick="return confirm('Are you sure?')" title="" class="btn btn-danger btn-link btn-sm" data-original-title="Remove">
@@ -72,7 +72,7 @@
                                   
                                 @endforeach
                             </table>
-                                
+                            {!! $rows->links() !!}  
                         </div>
                         </div>
                     </div>
